@@ -71,11 +71,3 @@ jobs:
           name: karma-coverage-report
           path: front/coverage/bobapp/
 
-      - name: Test Report (Karma)
-        uses: phoenix-actions/test-reporting@v8
-        if: success() || failure()
-        with:
-          name: Karma Coverage
-          path: front/coverage/bobapp/cobertura-coverage.xml
-          reporter: cobertura
-
