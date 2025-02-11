@@ -65,6 +65,15 @@ jobs:
           cd front
           npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
 
+      - name: Extract Karma Coverage Percentage
+        run: |
+          sudo apt-get install -y xmlstarlet
+          COVERAGE=$(xmlstarlet sel -t -v "/coverage/@line-rate" front/coverage/bobapp/cobertura-coverage.xml)
+          COVERAGE_PERCENT=$(echo "$COVERAGE * 100" | bc)
+          echo "| Outcome | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Karma Code Coverage % | $COVERAGE_PERCENT% |" >> $GITHUB_STEP_SUMMARY
+
       - name: Upload Karma coverage report
         uses: actions/upload-artifact@v4
         with:
