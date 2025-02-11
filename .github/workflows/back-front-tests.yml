@@ -1,0 +1,70 @@
+name: Tests Back And Front
+
+on:
+  pull_request:   # Lancer les tests sur une PR avant validation
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '11'
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd back
+          mvn clean install
+          cd ../front
+          npm ci
+
+      - name: Run backend tests with JaCoCo
+        run: |
+          cd back
+          mvn test jacoco:report
+
+      - name: Upload JaCoCo report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: back/target/site/jacoco/
+
+      - name: Test Report (JaCoCo)
+        uses: phoenix-actions/test-reporting@v8
+        if: success() || failure()
+        with:
+          name: JaCoCo Coverage
+          path: back/target/site/jacoco/jacoco.xml
+          reporter: jacoco
+
+      - name: Run tests with Karma
+        run: |
+          cd front
+          npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+
+      - name: Upload Karma coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: karma-coverage-report
+          path: front/coverage/bobapp/
+
+      - name: Test Report (Karma)
+        uses: phoenix-actions/test-reporting@v8
+        if: success() || failure()
+        with:
+          name: Karma Coverage
+          path: front/coverage/bobapp/cobertura-coverage.xml
+          reporter: cobertura
+
