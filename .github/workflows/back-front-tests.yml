@@ -54,10 +54,9 @@ jobs:
           path: back/target/site/jacoco/
 
       - name: SonarQube Scan Back
-        uses: SonarSource/sonarqube-scan-action@v4
-        with:
-          projectBaseDir: back
-          args: >
+        run: |
+          cd back
+          mvn sonar:sonar \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
