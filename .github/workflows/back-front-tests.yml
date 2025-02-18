@@ -51,10 +51,13 @@ jobs:
           path: back/target/site/jacoco/
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
-          SONAR_HOST_URL: 'https://sonarcloud.io/'
+        run: |
+          sonar-scanner \
+          -Dsonar.projectBaseDir=back \
+          -Dsonar.projectKey=ookaamii_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_back \
+          -Dsonar.organization=ookaamii \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN_BACK }}
           
       - name: Run tests with Karma
         run: |
@@ -68,7 +71,11 @@ jobs:
           path: front/coverage/bobapp/
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
-          SONAR_HOST_URL: 'https://sonarcloud.io/'
+        run: |
+          sonar-scanner \
+          -Dsonar.projectBaseDir=front \
+          -Dsonar.projectKey=ookaamii_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_front \
+          -Dsonar.organization=ookaamii \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN_FRONT }}
+
