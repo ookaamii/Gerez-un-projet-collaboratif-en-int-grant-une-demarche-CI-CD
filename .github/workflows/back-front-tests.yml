@@ -50,6 +50,10 @@ jobs:
           name: jacoco-report
           path: back/target/site/jacoco/
 
+      - name: Build Backend
+        working-directory: back
+        run: mvn clean install -DskipTests
+
       - name: SonarQube Scan Back
         uses: SonarSource/sonarqube-scan-action@v4
         with:
