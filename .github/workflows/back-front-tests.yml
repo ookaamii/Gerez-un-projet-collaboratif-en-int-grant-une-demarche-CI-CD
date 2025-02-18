@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd back
-          mvn clean install -DskipTests
+          mvn clean install
           cd ../front
           npm ci
 
@@ -53,21 +53,20 @@ jobs:
           name: jacoco-report
           path: back/target/site/jacoco/
 
-      - name: Install Sonar Scanner CLI
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
-          echo "$(pwd)/sonar-scanner/bin" >> $GITHUB_PATH
+      - name: Set up JDK 17 for SonarCloud
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: SonarQube Scan Back (CLI)
+      - name: SonarQube Scan Back
         run: |
-          sonar-scanner \
-            -Dsonar.projectKey=ookaamii_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_back \
-            -Dsonar.organization=ookaamii \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN_BACK }} \
-            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
+          cd back
+          mvn sonar:sonar \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
+          SONAR_HOST_URL: 'https://sonarcloud.io/'
           
       - name: Run tests with Karma
         run: |
