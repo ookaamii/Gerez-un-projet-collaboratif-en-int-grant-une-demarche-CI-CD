@@ -58,6 +58,8 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v4
         with:
           projectBaseDir: back
+          args: >
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
