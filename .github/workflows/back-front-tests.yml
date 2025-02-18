@@ -32,7 +32,6 @@ jobs:
           mvn clean install
           cd ../front
           npm ci
-
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v5.0
@@ -45,7 +44,7 @@ jobs:
           minimum_coverage: 80
           fail_below_threshold: false
           publish_only_summary: false
-          
+
       # uploads the coverage-report.md artifact  # Optional
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
@@ -53,27 +52,23 @@ jobs:
           name: jacoco-report
           path: back/target/site/jacoco/
 
-      - name: Set up JDK 17 for SonarCloud
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
+      - name: Build Backend
+        working-directory: back
+        run: mvn clean install -DskipTests
       - name: SonarQube Scan Back
-        run: |
-          cd back
-          mvn sonar:sonar \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN_BACK }} \
-            -Dsonar.projectKey=projectKey=ookaamii_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_back \
-            -Dsonar.organization=ookaamii \
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectBaseDir: back
+          args: >
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-          
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
+          SONAR_HOST_URL: 'https://sonarcloud.io/'
+
       - name: Run tests with Karma
         run: |
           cd front
           npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
-
       - name: Upload Karma coverage report
         uses: actions/upload-artifact@v4
         with:
