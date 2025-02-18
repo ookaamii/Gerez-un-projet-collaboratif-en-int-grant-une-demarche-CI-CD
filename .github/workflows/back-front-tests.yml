@@ -1,9 +1,11 @@
 name: Tests Back And Front
 
 on:
-  pull_request:   # Lancer les tests sur une PR avant validation
+  push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
