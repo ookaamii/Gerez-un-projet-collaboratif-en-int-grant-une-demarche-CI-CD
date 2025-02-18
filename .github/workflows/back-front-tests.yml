@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd back
-          mvn clean install
+          mvn clean install -DskipTests
           cd ../front
           npm ci
 
