@@ -74,12 +74,6 @@ jobs:
           name: karma-coverage-report
           path: front/coverage/bobapp/lcov-report/
 
-      - name: List coverage report files
-        run: ls -al front/coverage/bobapp/lcov-report/
-
-      - name: List coverage report files
-        run: ls -al front/coverage/bobapp/
-
       - name: SonarQube Scan Front
         uses: SonarSource/sonarqube-scan-action@v4
         with:
