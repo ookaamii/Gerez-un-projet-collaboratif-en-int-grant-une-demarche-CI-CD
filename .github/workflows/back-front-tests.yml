@@ -72,12 +72,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: karma-coverage-report
-          path: front/coverage/bobapp/
+          path: front/coverage/lcov-report/
 
       - name: SonarQube Scan Front
         uses: SonarSource/sonarqube-scan-action@v4
         with:
           projectBaseDir: front
+          args: >
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov-report/lcov-report.json
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
