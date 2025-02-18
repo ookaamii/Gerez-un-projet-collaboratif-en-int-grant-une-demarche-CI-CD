@@ -77,13 +77,15 @@ jobs:
       - name: List coverage report files
         run: ls -al front/coverage/bobapp/lcov-report/
 
+      - name: List coverage report files
+        run: ls -al front/coverage/bobapp/
 
       - name: SonarQube Scan Front
         uses: SonarSource/sonarqube-scan-action@v4
         with:
           projectBaseDir: front
           args: >
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov-report.json
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
