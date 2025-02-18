@@ -30,8 +30,7 @@ module.exports = function (config) {
       reporters: [
         { type: 'json', subdir: 'lcov-report', file: 'lcov-report.json' },
         { type: 'html' },
-        { type: 'text-summary' },
-        { type: 'cobertura' }
+        { type: 'text-summary' }
       ]
     },
     reporters: ['progress', 'kjhtml'],
