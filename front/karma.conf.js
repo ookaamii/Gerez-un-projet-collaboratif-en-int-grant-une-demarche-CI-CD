@@ -28,7 +28,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/bobapp'),
       subdir: '.',
       reporters: [
-        { type: 'json', subdir: 'lcov-report', file: 'lcov-report.json' },
+        { type: 'lcov' },
         { type: 'html' },
         { type: 'text-summary' }
       ]
