@@ -63,10 +63,10 @@ jobs:
         run: |
           cd back
           mvn sonar:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN_BACK }} \
+            -Dsonar.organization=ookaamii \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
-          SONAR_HOST_URL: 'https://sonarcloud.io/'
           
       - name: Run tests with Karma
         run: |
