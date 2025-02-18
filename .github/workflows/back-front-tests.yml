@@ -59,7 +59,7 @@ jobs:
           mvn sonar:sonar \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_}}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
           
       - name: Run tests with Karma
