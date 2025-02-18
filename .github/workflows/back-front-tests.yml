@@ -79,7 +79,8 @@ jobs:
         with:
           projectBaseDir: front
           args: >
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov-report/lcov-report.json
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov-report.json
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
+
