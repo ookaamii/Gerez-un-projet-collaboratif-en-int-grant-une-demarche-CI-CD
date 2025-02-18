@@ -28,10 +28,10 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/bobapp'),
       subdir: '.',
       reporters: [
+        { type: 'json', subdir: 'lcov-report', file: 'lcov-report.json' },
         { type: 'html' },
         { type: 'text-summary' },
-        { type: 'cobertura' },
-        { type: 'lcov' }
+        { type: 'cobertura' }
       ]
     },
     reporters: ['progress', 'kjhtml'],
