@@ -4,6 +4,7 @@ on:
   pull_request:   # Lancer les tests sur une PR avant validation
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   test:
