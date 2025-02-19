@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: karma-coverage-report
-          path: front/coverage/bobapp/lcov.info
+          path: front/coverage/bobapp/lcov-report/
 
       - name: SonarQube Scan Front
         uses: SonarSource/sonarqube-scan-action@v4
@@ -80,6 +80,7 @@ jobs:
           projectBaseDir: front
           args: >
             -Dsonar.sources=src/app
+            -Dsonar.exclusions=src/**/*.spec.ts
             -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
