@@ -1,9 +1,12 @@
 name: Tests Back And Front
 
 on:
-  pull_request:   # Lancer les tests sur une PR avant validation
+  push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -50,8 +53,12 @@ jobs:
           name: jacoco-report
           path: back/target/site/jacoco/
 
-      - name: SonarQube Scan
+      - name: SonarQube Scan Back
         uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectBaseDir: back
+          args: >
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
@@ -65,10 +72,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: karma-coverage-report
-          path: front/coverage/bobapp/
+          path: front/coverage/bobapp/lcov-report/
 
-      - name: SonarQube Scan
+      - name: SonarQube Scan Front
         uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectBaseDir: front
+          args: >
+            -Dsonar.sources=src/app
+            -Dsonar.exclusions=src/**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
+
