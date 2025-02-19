@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   workflow_run:
-    workflows: ["Run Tests and Coverage"]
+    workflows: ["Tests Back And Front"]
     types:
       - completed
 
