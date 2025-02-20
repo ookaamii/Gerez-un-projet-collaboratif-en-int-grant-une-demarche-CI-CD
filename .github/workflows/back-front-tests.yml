@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-back:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,17 +21,10 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: Install dependencies
         run: |
           cd back
           mvn clean install
-          cd ../front
-          npm ci
 
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
@@ -62,7 +55,23 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACK }}
           SONAR_HOST_URL: 'https://sonarcloud.io/'
-          
+
+  test-front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd front
+          npm ci
+        
       - name: Run tests with Karma
         run: |
           cd front
